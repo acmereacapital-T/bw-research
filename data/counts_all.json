@@ -1,0 +1,321 @@
+{
+ "updated": "2026-11-13",
+ "note": "机器标注的全部对口原话计数（核对页只放每批前 45 条）。trial–batch3 来自 review.json，batch4–10 来自各批 tags_all.jsonl。未经 Tian 逐条核对。 n_open = 开放搜索来的（搜索词不指向任何格子：经历类、品牌评价类）；n_directed = 定向搜索来的（搜索词本身指向这一格的话题）。判断普不普遍看 n_open。",
+ "total": 1809,
+ "cells": [
+  {
+   "side": "放不进",
+   "cell": "放不进",
+   "n": 353,
+   "n_open": 127,
+   "n_directed": 226
+  },
+  {
+   "side": "代价",
+   "cell": "价格（含平替、二手比较）",
+   "n": 263,
+   "n_open": 57,
+   "n_directed": 206
+  },
+  {
+   "side": "怕",
+   "cell": "不耐用",
+   "n": 183,
+   "n_open": 32,
+   "n_directed": 151
+  },
+  {
+   "side": "怕",
+   "cell": "和图不一样",
+   "n": 144,
+   "n_open": 42,
+   "n_directed": 102
+  },
+  {
+   "side": "想要",
+   "cell": "要好东西、别处买不到",
+   "n": 137,
+   "n_open": 21,
+   "n_directed": 116
+  },
+  {
+   "side": "怕",
+   "cell": "说话不算数",
+   "n": 128,
+   "n_open": 36,
+   "n_directed": 92
+  },
+  {
+   "side": "旁支",
+   "cell": "待收的线索：向上比大牌",
+   "n": 111,
+   "n_open": 31,
+   "n_directed": 80
+  },
+  {
+   "side": "怕",
+   "cell": "这家不是真品牌",
+   "n": 85,
+   "n_open": 8,
+   "n_directed": 77
+  },
+  {
+   "side": "想要",
+   "cell": "中间价位没得选",
+   "n": 78,
+   "n_open": 23,
+   "n_directed": 55
+  },
+  {
+   "side": "想要",
+   "cell": "用得着",
+   "n": 71,
+   "n_open": 44,
+   "n_directed": 27
+  },
+  {
+   "side": "怕",
+   "cell": "送到家麻烦",
+   "n": 65,
+   "n_open": 7,
+   "n_directed": 58
+  },
+  {
+   "side": "入口",
+   "cell": "在哪看见",
+   "n": 63,
+   "n_open": 10,
+   "n_directed": 53
+  },
+  {
+   "side": "代价",
+   "cell": "等待时间（确定的）",
+   "n": 63,
+   "n_open": 15,
+   "n_directed": 48
+  },
+  {
+   "side": "怕",
+   "cell": "钱拿不回",
+   "n": 50,
+   "n_open": 16,
+   "n_directed": 34
+  },
+  {
+   "side": "旁支",
+   "cell": "设计师在哪找货",
+   "n": 15,
+   "n_open": 3,
+   "n_directed": 12
+  }
+ ],
+ "aside": [
+  {
+   "name": "产地",
+   "n": 38
+  },
+  {
+   "name": "先凑合等摸清空间再买好的",
+   "n": 38
+  },
+  {
+   "name": "有小孩宠物",
+   "n": 35
+  },
+  {
+   "name": "租房常搬家",
+   "n": 25
+  },
+  {
+   "name": "舒适度要试坐",
+   "n": 16
+  },
+  {
+   "name": "可定制",
+   "n": 13
+  },
+  {
+   "name": "价格呈现",
+   "n": 11
+  },
+  {
+   "name": "绕过门店找工厂",
+   "n": 11
+  },
+  {
+   "name": "购物过程",
+   "n": 11
+  },
+  {
+   "name": "二手软体怕虫",
+   "n": 11
+  },
+  {
+   "name": "买房才买好的",
+   "n": 10
+  },
+  {
+   "name": "会看腻贬值",
+   "n": 6
+  },
+  {
+   "name": "家具有故事",
+   "n": 5
+  },
+  {
+   "name": "被收购后变差",
+   "n": 4
+  },
+  {
+   "name": "怕停产配不齐",
+   "n": 4
+  },
+  {
+   "name": "可换零件和套子",
+   "n": 4
+  },
+  {
+   "name": "藤编口味两极（像户外、不喜欢）",
+   "n": 3
+  },
+  {
+   "name": "尺寸买错",
+   "n": 3
+  },
+  {
+   "name": "颜色选错后悔",
+   "n": 3
+  },
+  {
+   "name": "太贵不敢用",
+   "n": 2
+  },
+  {
+   "name": "藤编难打理（积灰、招虫）",
+   "n": 2
+  },
+  {
+   "name": "有害气味",
+   "n": 2
+  },
+  {
+   "name": "少买一些更好",
+   "n": 2
+  },
+  {
+   "name": "旧家具难处理",
+   "n": 2
+  },
+  {
+   "name": "交房前别刷卡买家具",
+   "n": 2
+  },
+  {
+   "name": "可变布局其实很少用",
+   "n": 1
+  },
+  {
+   "name": "面料取舍",
+   "n": 1
+  },
+  {
+   "name": "下一代不要老家具",
+   "n": 1
+  },
+  {
+   "name": "木头生虫",
+   "n": 1
+  },
+  {
+   "name": "品牌与身份",
+   "n": 1
+  },
+  {
+   "name": "本地家具店撑不下去",
+   "n": 1
+  },
+  {
+   "name": "海外小店货流到折扣店",
+   "n": 1
+  },
+  {
+   "name": "风格标签对不上",
+   "n": 1
+  },
+  {
+   "name": "买家自己用 AI 预览",
+   "n": 1
+  },
+  {
+   "name": "新品太多不知从哪选",
+   "n": 1
+  }
+ ],
+ "category": [
+  {
+   "name": "沙发",
+   "n": 758
+  },
+  {
+   "name": "其他",
+   "n": 215
+  },
+  {
+   "name": "床",
+   "n": 136
+  },
+  {
+   "name": "边柜",
+   "n": 131
+  },
+  {
+   "name": "餐桌",
+   "n": 118
+  },
+  {
+   "name": "椅子",
+   "n": 97
+  },
+  {
+   "name": "茶几",
+   "n": 20
+  },
+  {
+   "name": "书架",
+   "n": 19
+  },
+  {
+   "name": "床垫",
+   "n": 19
+  },
+  {
+   "name": "凳子",
+   "n": 5
+  },
+  {
+   "name": "书桌",
+   "n": 3
+  }
+ ],
+ "open_queries": [
+  "Benchmade Modern review",
+  "Burrow sofa worth it",
+  "Castlery review",
+  "Floyd furniture worth it",
+  "Interior Define review",
+  "best furniture purchase you ever made",
+  "best investment furniture piece",
+  "buying furniture online experience",
+  "first apartment what furniture to buy first",
+  "furniture buying tips first home",
+  "furniture that makes a house feel like home",
+  "furniture you regret not buying",
+  "hardest furniture piece to find",
+  "regret furniture purchase",
+  "what furniture did you splurge on",
+  "what furniture is hardest to find good quality",
+  "what furniture is worth spending money on",
+  "what i wish i knew before buying a sofa",
+  "worst furniture buying experience"
+ ]
+}

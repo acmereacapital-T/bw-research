@@ -1,0 +1,1003 @@
+{
+ "audits": [
+  {
+   "date": "2026-11-13",
+   "model": "Fable 5.2 (claude-fable-5-2)",
+   "trigger": "结构变更 v0.4（一棵树「想要 > 代价 + 怕」；171 条原话迁移到格子）之后，夜间又抓了第四到十批，机器标注 1,809 条",
+   "summary": "原话本身可靠（2,121 条逐字都能在 raw 里找到，counts_all 能复算），但计数不能当「需求有多大」用：数量是被搜索词带出来的，四成原话是「勉强」或「放不进」，Tian 一条没核对，Q20–22 三个结构变更提议现在定还太早；另有 1 个论断是错的（Q8）、6 个说过头。",
+   "issues": [
+    {
+     "issue": "先有结论再找证据：格子和旁支的条数是搜索词搜出来的，不是自己长出来的",
+     "severity": "高",
+     "evidence": "「向上比大牌」111 条里 80 条来自第四批，那批搜索词是 is restoration hardware worth it / pottery barn quality gone down / paying for the brand name furniture（queries_batch4.json）。Q21「时机」76 条：第八批搜索词是 renting so not buying nice furniture / kids and pets so cheap furniture until / buy cheap furniture now nice furniture later，第八批放不进率 45%。Q20 产地：第六批搜 furniture made in china quality worried，第八批搜 made in usa。第十、十一批搜 asian inspired furniture where to buy / furniture with soul vs mass produced，是在替 BW 的定位找支持（N5 Tian：「这是产品核心逻辑，要充分抓取」；b10-001 的备注写「BW 亚洲风格正好补这个空」）。",
+     "suggestion": "条数只能说明「有人这么说」，不能说明「多」。每格分开显示：定向搜索来的几条、开放搜索来的几条；要不要长新格子，只看开放搜索来的那部分。Q20–22 先不定。"
+    },
+    {
+     "issue": "Q8「精装修和 TikTok 挤压零售家具」没有一条站得住的原话，模型却把它当作格子「用得着」的证据（「Q8 原话 2 条」）",
+     "severity": "高",
+     "evidence": "trial-025（r/DecorReps，Alibaba 买仿品的帖子）原文：5 months to deliver isn’t terrible. This would be perfect if I were moving into a built home——说的是等 5 个月可以接受，不是精装修。b2-057 是 r/SoloLivingPH（菲律宾，按规则整串不收）问 TikTok Shop 家具，回复说藤柜不结实。两条在 review.json 里分别标在「等待时间」「不耐用」，都不在「用得着」。",
+     "suggestion": "Q8 撤回或改成待查；模型格子表「用得着」的证据改成机器标注的 71 条（未核对），不再引 Q8。"
+    },
+    {
+     "issue": "1,809 条机器标注没经过 Tian 核对，就拿来提三个结构变更（Q20、Q21、Q22）",
+     "severity": "高",
+     "evidence": "counts_all.json 自己写「未经 Tian 逐条核对」；pipeline.json 还停在「第四批 · 你核对 0 / 45」（已经过时）；v0.3 定的门槛是「连续两批 ≥95% 才从逐条判改成抽查」。全量里 清楚 1,086、勉强 370、放不进 353，即 40% 不是干净归类。",
+     "suggestion": "先让 Tian 核对第四、五批各 45 条，算出机器标注准确率，再谈结构变更；pipeline.json 更新到第十批。"
+    },
+    {
+     "issue": "分类不止一套：数据里还留着旧分类，格子名有两种写法",
+     "severity": "中",
+     "evidence": "questions.json 的 branch 仍是旧五站（看见 BW / 相信 BW / 愿意等 / 买哪件 / 买了以后 / 树外：市场）；review.json 每条仍带 direction 1–7、stage（9 个值）、topic（混着 Q 编号、格子名、旁支名、「新」「想要」）。格子名：「等待时间」13 条 vs「等待时间（确定的）」23 条；「价格」5 条 vs「价格（含平替、二手比较）」17 条（counts_all 已统一，review.json 和 questions.json 没有）。1 条 side=想要、cell=放不进（批二）。Q20 写 side=怕、Q21 写 side=代价，但 cell=放不进——还没成格就先定了边。",
+     "suggestion": "review.json、questions.json 的格子名统一成模型里的写法；branch、stage、direction 若页面不显示就从页面数据里拿掉，或在页面上确认没露出。"
+    },
+    {
+     "issue": "「怕」的格子被当成话题桶用，正面经历也算进去；几个格子边界糊",
+     "severity": "中",
+     "evidence": "第四到十批：钱拿不回 43 条里 11 条是正面（例「退货上门取件很顺」）；和图不一样 25%、送到家麻烦 30% 是正面或给办法。「等待时间（确定的）」50 条里 68% 是 path，且混进「自己慢慢买」（例：搬进去等一个月才买沙发），和旁支「先凑合」重叠。「要好东西、别处买不到」116 条里 46% 是勉强，装了很多普通好评（例「Article 做工好客服好」）。",
+     "suggestion": "每格条数按「怕 / 给办法 / 中性」拆开显示；「等待时间」只留交期，自己慢慢买的移去「先凑合」；「要好东西」把普通品牌好评拿出去。"
+    },
+    {
+     "issue": "非美国、非目标人群的原话还在格子里撑着结论",
+     "severity": "中",
+     "evidence": "前 171 条里 17 条来自 ScamsUK、britishproblems、SoloLivingPH、delhi（标签规则 v2：整串不收），其中 3 条 SoloLivingPH 的 region 还写 unknown。「等待时间」前三批 13 条里 6 条是英国版块。Q3、Q4、Q5、Q7、Q8、Q10 的出处里都有这些条；N4「付款方式一定要正规」靠的 trial-020 来自 r/ScamsUK。另有 5 条来自 r/DecorReps（买仿品的人），Tian 在 Q3 说「买家没那么敏感」主要来自这串。全量 region：88% 是 unknown。",
+     "suggestion": "这 17 条从格子计数里拿掉，Q 的出处同步删；DecorReps 的原话单独标「仿品买家」。第四到十批没有发现别国版块，这点做对了。"
+    },
+    {
+     "issue": "最新一批（第十批）放不进和勉强的比例",
+     "severity": "中",
+     "evidence": "154 条：清楚 67（44%）、勉强 57（37%）、放不进 30（19%）。各批放不进率：16% / 16% / 27% / 5% / 45% / 41% / 19%，随搜索词大幅摆动，看不出趋势。tags_all 没有「第二格」字段，同时属于两格的条数数不出来，只能拿「勉强」当替身。第四批 79 条放不进没写旁支名，counts_all 的旁支表（合计 273）漏了它们。第十一批 1,294 条已抓、没标。",
+     "suggestion": "标签加一个 cell2 字段；第四批 79 条补旁支名；放不进率只在开放搜索的原话上算。"
+    },
+    {
+     "issue": "旧版本里的东西，v0.4 的覆盖检查表没提，实际已经丢了",
+     "severity": "中",
+     "evidence": "v0.2：「Reddit 以外的来源至少占一半」——现在 100% Reddit，r/BuyItForLife 一个版占第四到十批的 22%（361 / 1,638），会把「不耐用」「价格」推高。v0.2 的 home 字段（租房 / 自有房）全部为空，而 Q21 正要靠它。v0.2 的新品牌案例板、第 1 关「重开原页面逐字比对」（verified_page 全是 False）没有下文。",
+     "suggestion": "在模型下一版写明：这几项是放弃、延后还是照做。home 字段在提「人生阶段」格子之前先补上。"
+    },
+    {
+     "issue": "「第三批找到 10 条想要」数多了",
+     "severity": "中",
+     "evidence": "b3-011 原文是「在 PB 花了几千，5 年后漆面很糟」，是不耐用，不是想要；b3-020、b3-043 是同一个人在犹豫要不要买 PB 的椅子；b3-024 是推荐一个首饰柜品牌耐用。真正说「想要独特 / 好东西、市面没有」的约 5–6 条。",
+     "suggestion": "N5 和模型格子表改成「约 5–6 条」，b3-011 移到「不耐用」。"
+    },
+    {
+     "issue": "藤编几乎没有证据，却挂在「想要」下面",
+     "severity": "低",
+     "evidence": "第四到十批 1,638 条里只有 16 条提到 rattan / cane / wicker，其中 8 条放不进、8 条是 risk。Q13 的出处里：b2-032「看到藤编想到户外家具」、b2-033「藤编怕过时」、trial-046「怕显廉价」都是顾虑，却归在「想要 · 要好东西」。",
+     "suggestion": "Q13 改挂「放不进 / 待定」，或拆成想要和怕两边；藤编单独再抓一批开放搜索。"
+    },
+    {
+     "issue": "模型文件的数字没跟上，Tian 的两处想法和原话方向相反",
+     "severity": "低",
+     "evidence": "v0.4 格子表还写「28 条 / 16 条 / 20 条 / 10 条」「送到家麻烦约 25 条未收」「钱拿不回待拆」「中间价位只 2 处」，和 counts_all 对不上。品类计数（沙发 758、边柜 131）跟着搜索词走（第五、七批专搜 sideboard）。Q10 Tian：「之后要刷的话需要建立一套机制」——同一批原话（b3-005 等）说的是买家会识别刷评、全五星反而可疑。Q20「意大利、法国常被当加分」各只有 1 条。",
+     "suggestion": "模型格子表的证据列改成引用 counts_all；N3 / Q18 用品类数字前写明偏差；Q10 的刷评想法放进会议时附上反面原话。"
+    }
+   ],
+   "factcheck": [
+    {
+     "claim": "「I'm overwhelmed」那串：94 条评论；楼主不知道中间价位长什么样（便宜的不满意、高一档超预算、IKEA 太矮）；评论最多人劝买二手；最后先买床垫",
+     "verdict": "对",
+     "source_says": "都对得上（94 条评论里约 41 条提二手）。漏了一句：楼主明说 not trying to buy 2nd hand or used, not for the sofa or bed；沙发预算不超过约 $2K。",
+     "where": "调研模型_v0.4.md 更正段；raw batch3 thread 1trbed4"
+    },
+    {
+     "claim": "DreamSofa：报 5–7 周，实际生产 12 周，讨补偿只给 5%，总共 13.5 周到货",
+     "verdict": "对",
+     "source_says": "told 5-7 weeks for production… Production lasted 12 weeks… They came back with 5% only；同一人后来补充 13.5 weeks from order to delivery。",
+     "where": "cases.json C2、threads.json b3-003；raw batch3 thread 1vd83rt"
+    },
+    {
+     "claim": "PB 案例：137 条评论；楼主被「仅剩几件」催着下单；73 赞的评论说 5 年后漆面很糟；「质量配不上价格」13 条",
+     "verdict": "对",
+     "source_says": "sense of urgency created by \"last few\" marketing on sale items；Fast forward 5 years the finish looks like hell on most pieces（73 赞）。「急用会跳过权衡」只有这 1 串，模型已自己标了证据弱。",
+     "where": "cases.json C1、调研模型_v0.4.md 顶层；raw batch3 thread 1x61cvz"
+    },
+    {
+     "claim": "第三批：好沙发定制本来要 2–3 个月，买家接受",
+     "verdict": "说过头",
+     "source_says": "只有 1 条评论，是别人在提醒楼主：If you want a truly nice couch in the $2k+ range, it's usually 2-3 months made-to-order。楼主本人一个月内就要家具。原文没有「买家接受」。",
+     "where": "调研模型_v0.4.md 格子表「等待时间」；review.json b3-019"
+    },
+    {
+     "claim": "第三批：支持「等是常态」4 条，反对 3 条",
+     "verdict": "说过头",
+     "source_says": "4 条支持里 2 条（b3-029、b3-040）是同一个人：在假网站买 $79.99 户外椅的受害者，早期还抱希望时说的，后来确认被骗；b3-019 是上面那条提醒；只有 b3-020 是真买家说「不介意晚到」。3 条「反对」反对的是交期滑动，不是等待本身。",
+     "where": "notes.json N2；raw batch3 thread 1slah41、1x61cvz"
+    },
+    {
+     "claim": "Q8：精装修在挤压零售端家具市场，TikTok 也在卖家具",
+     "verdict": "错",
+     "source_says": "trial-025 原文：5 months to deliver isn’t terrible. This would be perfect if I were moving into a built home——是说等 5 个月可以接受。b2-057 是菲律宾版块问 TikTok Shop 家具。没有一条在讲精装修挤压零售。",
+     "where": "questions.json Q8；调研模型_v0.4.md 格子「用得着」"
+    },
+    {
+     "claim": "N4：买家把付款方式当作能不能信的信号",
+     "verdict": "说过头",
+     "source_says": "原话在：Accepting Klarna and credit cards makes them look legit。但它来自 r/ScamsUK（英国），按标签规则 v2 整串不该收；另一条 trial-024 来自买仿品的版块。美国买家的证据要另找（第四到十批「钱拿不回」里有，例「要用信用卡」）。",
+     "where": "notes.json N4、questions.json Q4；review.json trial-020"
+    },
+    {
+     "claim": "Q6：$100 的椅子质量过关，买家就不会花 $2–4K；「贵四倍质量差不多」",
+     "verdict": "说过头",
+     "source_says": "原文是三个理由一起：can’t justify spending 2-4K on a chair I’ve never sat on, no reviews, that has decent dupes for a few hundred dollars——是几百美元，不是 $100，而且没坐过、没评论同样是原因。「贵四倍」对（$2500 和 $10,000 的卧室套装）。",
+     "where": "questions.json Q6；review.json trial-015、b2-041"
+    },
+    {
+     "claim": "Q19：r/EtsySellers 那串，很多买家说一看到 AI 产品图就不买；卖的是杯子",
+     "verdict": "说过头",
+     "source_says": "杯子对（engraved cups）。高赞评论确实说不买（I see AI, I avoid 150 赞；I don't buy anything with AI images 68 赞），但这是卖家版块，说话的人多数是卖家，也有卖家说用 AI 背景后销量涨了。应写「很多卖家自己作为买家会避开」。",
+     "where": "questions.json Q19；raw batch6 thread 1tmcln9"
+    },
+    {
+     "claim": "Q22：「向上比大牌」累计约 105 条，多数是嫌大牌质量配不上价格；有原话撑着就该进「想要」",
+     "verdict": "说过头",
+     "source_says": "105 条数字对（第四到八批），内容描述也对（111 条里 73 条是 risk）。但推论接不上：嫌大牌不值，是「怕 · 不耐用」或「代价 · 价格」，不是想要；而且 80 条来自专门搜「RH 值不值 / PB 质量下降 / 付的是牌子钱」的第四批。",
+     "where": "questions.json Q22；runs/2026-11-13_reddit-batch4/tags_all.jsonl、queries_batch4.json"
+    }
+   ]
+  },
+  {
+   "date": "2026-11-13",
+   "model": "Fable 5.2 (claude-fable-5-2)",
+   "trigger": "结构变更提案「核对的单位从原话改成帖子」（抓取/提案_核对单位改成帖子.md，未执行）；Tian：「现在看起来好像是这么一回事，但是我需要审核这个方案。」",
+   "summary": "方向有一半对（Tian 的判断确实在帖子层，第一次复盘 9 错里 5 条是脱离上下文），但提案的两条诊断证据不够：前 45 条并不比随机抽更集中，「案例按钮没用」只看了排名最前的 6 串；而「原话默认算对 + 每批抽 10 条」会让 95% 门槛失去意义，并和 v0.4 渐进式核对冲突。建议不整体换单位，只做三处小改。",
+   "issues": [
+    {
+     "issue": "诊断一「45 条集中在最好的帖子里」说过头：集中是数据本身的形状，不是挑选造成的",
+     "severity": "中",
+     "evidence": "第四到十批前 45 条分别来自 27 / 20 / 17 / 12 / 14 / 16 / 14 串；从各批 tags_all 里随机抽 45 条，平均也只会落在 26 / 18 / 17 / 14 / 13 / 18 / 12 串（模拟 500 次）。Tian 实际在看的第四批最分散：27 串里 17 串只有 1 条，前 5 串占 40%。真正的问题在另一头：7 批共 187 串有对口原话，其中 67 串、297 条原话一条都没进前 45，Tian 完全没见过（第四批就占 31 串、156 条）。",
+     "suggestion": "提案里把问题改写成「有 67 串没被看到」，而不是「45 条太集中」。要解决的是覆盖，不是单位。"
+    },
+    {
+     "issue": "诊断二「案例按钮没有筛选作用」只有 6 串的证据，而且是排名最前的 6 串；Tian 点了什么仓库里查不到",
+     "severity": "高",
+     "evidence": "核对页按每串最好名次排序（bw-research-model.html 1751–1754 行），Tian 先看到的本来就是机器排最前的；第四批前 6 串机器自己的 worth_case 是 4/6，全批是 13/27，threads.json 全部 137 串是 66 真 71 假。Tian 的判断只存在页面数据库里，不在 review.json / threads.json，「6 串都点了」本次无法核实。换成三档以后，如果仍然先推最好的帖子，一样会几乎全是「必须细读」。",
+     "suggestion": "先让 Tian 把第四批剩下的 21 串看完，再看「整串是案例」的比例；主线把 Tian 的判断导出一份到仓库。若到后面比例仍接近 100%，再改分档，并给「必须细读」设每批名额。"
+    },
+    {
+     "issue": "「原话默认算对」会让准确率虚高，随机抽 10 条校准不了 95% 门槛",
+     "severity": "高",
+     "evidence": "抽 10 条要 10/10 才算 ≥95%：机器真实准确率只有 85% 时仍有 20% 概率全对，90% 时 35%；真实 95% 时反而有 40% 概率不过。第一次复盘是 126 条里错 9 条（92%）。另外「没点」分不清是「看过同意」还是「没看」。全量 1,638 条里 335 条勉强、352 条放不进（42%），前 45 条里放不进占 96/312——这些本来就没有「对」可默认，要的是 Tian 决定归哪格。v0.3 定的是过门槛后抽查 20% 再降到 10%，不是每批 10 条。",
+     "suggestion": "准确率只用盲抽样本算，不用「默认算对」的条数；样本从 tags_all 全量里抽（不是前 45），每批约 30 条或跨批累计到 60 条以上再下结论。勉强 / 放不进的原话不适用默认算对。没看过的串记「未判」。"
+    },
+    {
+     "issue": "和 v0.4 渐进式核对冲突，提案没写结构变更卡",
+     "severity": "高",
+     "evidence": "v0.4「渐进式核对」第 2–4 步靠 Tian 逐条判断来改标签规则、把同类标成「机器已定」、再挑最不确定的 45 条；v0.5 写明这套沿用。提案没说这个循环是保留、改还是作废，也没有 v0.5 那种卡（改什么 / 替换什么 / 要迁移的 / 风险）。没提的还有：每条原话的地区判断（第四到十批前 45 条里 270/312 条要判地区）、改格子（cell_fix）、「这一条是案例」按钮、「要讨论」标记——第一次复盘 126 条里 Tian 标了 80 条要讨论、写了 92 条留言，问题清单大多从这里来；改成每串「一句想法」会变少。",
+     "suggestion": "补一张结构变更卡，逐项写明：渐进式核对的五步各自怎么变；地区、改格子、单条案例、要讨论四个原话层的动作留不留；已判的记录怎么迁移。"
+    },
+    {
+     "issue": "分类又多一套：帖子三档 + 机器给帖子排序的三个标准",
+     "severity": "中",
+     "evidence": "现有的原话层已经有 rank、novelty、cell_fit、confidence，帖子层有 worth_case；review.json 还留着旧的 direction、stage、topic（上次复审已指出，仍在）；questions.json 的 branch 仍是旧五站。提案再加「必须细读 / 值得留着 / 一般」和「和 BW 多相关、信息多不多、新不新」。三档里只有「必须细读」写了后果（做成案例），「值得留着」和「一般」之后拿来做什么没写，是凭空的格子。",
+     "suggestion": "三档各写一句「之后用来做什么」，写不出的那档删掉（两档就够）；帖子排序直接用已有的 worth_case 和原话名次，不新造标准。"
+    },
+    {
+     "issue": "先有结论再找证据：帖子按「和 BW 多相关」排序",
+     "severity": "中",
+     "evidence": "上次复审已指出搜索词在替 BW 的定位找支持。帖子若按「和 BW 相关」排，说「二手就够了」「不需要好家具」这类对 BW 不利的串会沉底；现在前 45 条已偏向「新」（312 条里 222 条标新，全量 1,638 条里只有 484 条），不是随机样本，现在算出的准确率本身也不代表全量。提案的两条诊断也是先有「单位错了」的结论，再用 6 串去撑。",
+     "suggestion": "排序标准去掉「和 BW 多相关」，或至少每批留几串随机位给排名靠后的帖子。"
+    },
+    {
+     "issue": "漏掉的：工作量和成本没算",
+     "severity": "低",
+     "evidence": "按帖子推，每批要分档的是 14–58 串（第四批 58 串），其中 67 串还没有帖子地图（threads.json 只有 137 串）；「必须细读 = 完整案例」，而 cases.json 至今只做了 2 个。第一次复盘 Tian 说一个多小时是上限。第十一批 1,294 条仍未打标签；pipeline.json 仍写「你核对 0 / 45」。",
+     "suggestion": "提案里写清每批推几串、预计用时；案例设名额。"
+    },
+    {
+     "issue": "有更简单的做法：不换单位，只改三处",
+     "severity": "中",
+     "evidence": "页面已经按帖子分组显示（「第 X / N 串」），显示单位早就是帖子；提案真正新增的只有三件：按帖子挑、三档、默认算对。前两件可以在现有页面上加，第三件是风险最大、收益最小的一件。",
+     "suggestion": "① 帖子头上的「整串是案例」换成两到三档 + 一句想法，并加「这串看完了」；② 每批把没进前 45 的帖子各放 1 条最好的原话进来，补覆盖；③ 另抽一份盲抽样本专门算准确率。原话仍逐条判，但同一串里可以一键「这串其余都对」，这样有记录、可回查。"
+    }
+   ],
+   "factcheck": [
+    {
+     "claim": "机器按原话挑每批前 45 条",
+     "verdict": "对",
+     "source_says": "review.json：第三到九批各 45 条，第十批 42 条，每条带 rank；第四批全量 509 条（tags_all.jsonl 509 行，raw.jsonl 3,858 行）。",
+     "where": "提案「观察到的问题」；review.json batches"
+    },
+    {
+     "claim": "这 45 条集中在最好的那些帖子里",
+     "verdict": "说过头",
+     "source_says": "前 45 条来自 12–27 串，和随机抽 45 条会落到的串数（12–26）基本一样；第四批 27 串里 17 串只有 1 条。",
+     "where": "提案；各批 tags.jsonl 对 tags_all.jsonl"
+    },
+    {
+     "claim": "第四批已看的帖子里 6 串都点了「整串是案例」",
+     "verdict": "无法核实",
+     "source_says": "Tian 的判断存在页面数据库，仓库里没有；第四批排最前的 6 串，机器 worth_case 是 4 真 2 假。",
+     "where": "提案；threads.json"
+    },
+    {
+     "claim": "「案例」按钮没有筛选作用",
+     "verdict": "说过头",
+     "source_says": "只看了 27 串里排名最前的 6 串；机器自己对 137 串的判断是 66 值得、71 不值得，并非全是。",
+     "where": "提案；threads.json worth_case"
+    },
+    {
+     "claim": "Tian 先读整串帖子地图，再判原话；判断其实在帖子层",
+     "verdict": "对",
+     "source_says": "页面按帖子分组、显示「第 X / N 串」；第一次复盘 9 错里 5 条是「脱离上下文」，Tian 留言「需要 read 整个 thread 才 get context」（b2-062，原帖是 r/RepTherapy 买包的帖子）。",
+     "where": "bw-research-model.html；复盘_2026-11-12.md；judged_2026-11-12.json"
+    },
+    {
+     "claim": "每批随机抽约 10 条，用来校准准确率（95% 门槛）",
+     "verdict": "错",
+     "source_says": "10 条分不出 85% 和 95%（85% 时 20% 概率 10 条全对）。v0.3 原文：连续两批 ≥95% 才从逐条判改成抽查 20%，再稳定后降到 10%；v0.4：连续两轮 ≥95%。",
+     "where": "提案；调研模型_v0.3.md 63 行、v0.4「渐进式核对」"
+    },
+    {
+     "claim": "原话默认算对",
+     "verdict": "说过头",
+     "source_says": "第四到十批全量 1,638 条：清楚 951、勉强 335、放不进 352。四成不是干净归类，没有「对」可默认。",
+     "where": "提案；各批 tags_all.jsonl cell_fit"
+    },
+    {
+     "claim": "第一次复盘：126 条，对 116、错 9、存疑 1，准确率 92%",
+     "verdict": "对",
+     "source_says": "9 条错和 1 条存疑的编号对得上；但 judged 文件只存了 93 条（83 对），其余 33 条对的没有存档，116 这个数无法完全复算。",
+     "where": "复盘_2026-11-12.md；judged_2026-11-12.json"
+    },
+    {
+     "claim": "v0.5：渐进式核对全部沿用",
+     "verdict": "对",
+     "source_says": "v0.5 第 4 行写明沿用；提案没有提它，两者现在是冲突状态。",
+     "where": "调研模型_v0.5.md；提案"
+    },
+    {
+     "claim": "「必须细读」= 做成完整案例",
+     "verdict": "说过头",
+     "source_says": "cases.json 目前只有 2 个案例（PB、DreamSofa）；机器标 worth_case 的有 66 串。按「几乎每串都点」的速度，案例做不过来，提案没写名额。",
+     "where": "提案；cases.json、threads.json"
+    }
+   ]
+  },
+  {
+   "date": "2026-11-13",
+   "model": "Fable 5.2 (claude-fable-5-2)",
+   "trigger": "第四批复盘（准确率 69%，标签规则 v3）+ 结构变更 v0.5（看见是门）。Tian 问：大方向健康不健康；案例怎么建立捕捉和归纳的系统（审 抓取/提案_案例库.md，未执行）",
+   "summary": "方向没有走错，但两天换了四次主轴、周日要交的发现一条都还没写，工具正在变成成果。【问题 1 · 大方向】健康的：原话逐字可回到 raw，Tian 的判断能复算（25 / 11 / 9 重算一致），纠错在起作用（Q8 撤回、N2 / N4 / N5 改弱、定向和开放分开计数）。有风险的：格子不贴数据（Tian 判的 45 条里 20 条没落稳，其中 15 条是格子本身的问题）；数据只有 Reddit，1,809 条对口原话里提到 Instagram 的只有 14 条，IG 策略推不出来；「中间价位」被两个人都读成对 BW 有利，原话有一半是反的。最大的一个风险：v0.2 到 v0.5 都在 11/12–11/13 两天里，而发现候选 0 条、23 个待讨论话题 0 个有结论，这套模型能不能产出判断还没被检验过。【问题 2 · 案例库提案】诊断成立一半：「案例」按钮确实没有筛选作用（26 串点了 25 串），但提案只回答了捕捉和存放，没有回答 Tian 要的「归纳」；会再加一套分类（帖子类型 5 类，其中两类各只有 1 串撑着）；更简单的做法是不建库，把帖子列表做成现有 threads.json 的一个按格子筛选的视图，真正要加的是每格一张「这一格目前的说法」，也就是发现候选。事实核对 10 条：6 对、4 说过头、0 错。",
+   "issues": [
+    {
+     "issue": "周日要交的东西是零，结构却还在改：没有一条发现写出来过，所以没人知道这套模型能不能产出判断",
+     "short": "发现是零",
+     "cells": [
+      "整体"
+     ],
+     "severity": "高",
+     "evidence": "主轴换了四次，都在 11/12–11/13：6 个市场问题 → 7 个方向 → 买家的路 → 想要 > 代价 + 怕 → 看见 ×（想要 > 代价 + 怕）。同期还有 3 版标签规则、2 份提案、2 次复审（这是第 3 次）。brief 定的周日交付：发现候选 8–12 条，仓库里没有这个文件，pipeline.json 写「进发现 0」；IG 策略、新品牌案例板、给 Nico 的演示版都没有文件。questions.json 26 条里 23 条是待讨论类，有结论的 0 条（16 待讨论、4 核对中记下、2 待抓、1 撤回）。",
+     "suggestion": "周日前冻结：不出 v0.6，不做案例库，不再改规则。用 Tian 已判的 171 条原话和 26 条帖子留言直接写 6–8 条发现，每条带反面证据。写不出来的地方，才是模型真正要改的地方。"
+    },
+    {
+     "issue": "格子不贴数据，而 v0.5 改的不是出错的地方",
+     "short": "格子不贴数据",
+     "cells": [
+      "整体"
+     ],
+     "severity": "高",
+     "evidence": "Tian 判的第四批 45 条：对 25、错 11、存疑 9，即 20 条（44%）没落稳；复盘自己的归因里，15 条是格子本身的问题（格子名不准 7、向上比大牌是什么 3、要新格子 4、一条三格 1）。机器标「清楚」的 35 条里 Tian 只认了 22 条。放不进：机器标 10 条，Tian 移走 4 条、另移入 4 条。v0.5 改的是顶层（看见是门），这 20 条里只有 b4-038 和入口有关；「没看见就不会权衡」v0.5 自己写明不是从原话数出来的。机器最新的第十批 154 条仍是清楚 67、勉强 57、放不进 30，v3 之后没有重标。",
+     "suggestion": "69% 是格子的分数，不是机器的分数，也不能和前三批的 92% 比（那时判的是 7 个方向）。下一次结构变更只处理复盘里的 B、C、D 三类，顶层不再动。"
+    },
+    {
+     "issue": "周日要讲的 IG 策略，这批数据推不出来",
+     "short": "IG 没有证据",
+     "cells": [
+      "入口|在哪看见"
+     ],
+     "severity": "高",
+     "evidence": "brief 写 IG 策略「由发现推出来」。1,809 条对口原话里提到 Instagram 的只有 14 条，其中 8 条是不信或反感（b3-007：IG is notorious for fake ads；第十批：skeptical of Instagram popular brands）。第七批专门搜了 saw this couch on instagram anyone own it，入口表 33 处里 Instagram 只有 2 处，Pinterest 8 处、门店 7 处。raw 18,524 行全部来自 Reddit；r/BuyItForLife 一个版占第四到十批的 22%（361 / 1,638）；地区 88% 是 unknown。v0.2 写的「Reddit 以外的来源至少占一半、加 home 字段」：现在是 0%；home 在核对过的 483 条里 455 条是 unknown，全量 1,638 条的标注里没有这个字段。",
+     "suggestion": "对 Nico 明说边界：这批数据能回答「买家怕什么、产品页和售后该怎么做」，回答不了「IG 有没有用」。IG 策略标成假设。不用再抓：raw 里有 572 行提到 Instagram，没当成专题读过，周日前过一遍，就是 IG 这一页唯一的买家证据。"
+    },
+    {
+     "issue": "两个人都把「中间价位」读成对 BW 有利，原话有一半是反的",
+     "short": "中间价位读偏",
+     "cells": [
+      "想要|中间价位没得选"
+     ],
+     "severity": "高",
+     "evidence": "从这格 78 条机器标注里随机抽 30 条读（复审员的读法，Tian 可以不同意）：在找这一档的 12 条；说这一档不存在、或是「贵的垃圾」的 11 条（b4-011：expensive furniture that is still cheaply made… a step up from IKEA）；说答案是二手的 4 条；说不清 3 条。Tian 的 26 条帖子留言里 8 条写「我们的赛道 / 好消息」；其中大理石桌那串（1xhwdxn），楼主最后的决定是不在那三家买、去找本地的人做。v0.4 更正段写「对 BW 反而有利：中间价位有空白」，v0.5 沿用。另一组原话说大牌只是营销公司、同厂贴牌、中间商（b4-002、007、017、018、019、022），现在归在旁支「向上比大牌」；Tian 在 b4-018 留言说「对 BW 是有帮助的」，但他在 Q5 里自己写过 BW「业务本身有中间商的性质」，这组话同样指向 BW（b4-019、022 的留言里他已经意识到）。",
+     "suggestion": "这一格拆成「在找」和「不信这一档」，作为给 Nico 的第一条发现，两面都摆出来。「中间商」那组原话同时挂到「怕 · 这家不是真品牌」下。"
+    },
+    {
+     "issue": "案例库提案：诊断成立一半，会再加一套分类，没有回答「归纳」",
+     "short": "案例库提案",
+     "cells": [
+      "整体"
+     ],
+     "severity": "中",
+     "evidence": "成立的：26 串里 Tian 点了 25 串「整串是案例」（机器对这 26 串的 worth_case 是 13 真 13 假），按钮确实没有筛选作用；26 条留言里约 16–17 条能对上现有的一格。没排除的：这 26 串里 20 串来自定向搜索词，又是机器排在最前的帖子，Tian 自己说「第一次看，所以对我目前来说都是有用的」（Q23），新鲜感会降。提案第 4 条的帖子类型 5 类里，「成功的经历」「知识点」各只有 1 串留言撑着，并和已有的 stance、knowledge.json 重叠。按树归档会继承树的问题：约 9–10 串对不上任何一格（二手对网店、本地匠人、工厂直购、showroom 怎么经营），正是复盘 D 那几类。第 5 条「学排序」：25 / 26 都是正例，没有反例可学。Tian 要的是「捕捉和归纳」「推导出一些实际的方法」（Q24、Q25），提案只做了捕捉和存放；他判 45 条加 26 串已经「精疲力竭」，而有对口原话的帖子有 187 串以上。",
+     "suggestion": "不建库。①帖子列表做成 threads.json 的一个按格子筛选的视图，主格取这串原话里最多的那一格（机器算，不加字段），一行 = 已有的 bw 一句话 + Tian 留言；没地图的 67 串只列标题、标「未看」。②不加帖子类型。③要加的是每格一张「这一格目前的说法」：3–5 句，每句挂支持几串、反对几串，这就是发现候选。④学排序不做。⑤①②周日后做，周日前只做③。"
+    },
+    {
+     "issue": "标签规则 v3 用一条规则定了一个还在搁置的结构问题，证据比写的少，也没按规矩验证",
+     "short": "v3 证据少",
+     "cells": [
+      "想要|用得着"
+     ],
+     "severity": "中",
+     "evidence": "规则写的依据是 b4-030、032、044。b4-032 原文讲的是消费者要新、不看重耐久（\"Newness\" has a higher value… the longevity that YOU value ISN'T valued by today's consumers），不是人生阶段；b4-044 Tian 判的是「对」。真正撑着的是 030、044 两条和 031 的留言。复盘自己写这「部分回答了 Q21」，而 Q21 的状态是先搁置。标签规则写明改规则后要用基准样本重打、一致率更高才生效，v3 没有这条记录，tags_all 也没重标。按 counts_all，人生阶段类旁支共 108 条（先凑合 38、有小孩宠物 35、租房常搬家 25、买房才买好的 10），会倒进只有 71 条的「用得着」。Tian 自己写的是「触发想要的先决条件」（1xdlkc7 留言），和「看见」是同一类东西。",
+     "suggestion": "v3 标成试行；人生阶段放哪，回到 Q21，和 B、C、D 一起讨论。"
+    },
+    {
+     "issue": "分类不止一套，v0.5 的迁移没做",
+     "short": "分类不止一套",
+     "cells": [
+      "整体"
+     ],
+     "severity": "中",
+     "evidence": "review.json 每条仍带 direction（0–7）、stage（9 个值）、topic（52 个值）、stance、novelty；格子名仍有两种写法（「等待时间」13 条、「价格」5 条）；questions.json 的 branch 仍是旧五站。v0.5 说入口不再是第四栏，但 review.json 27 条、counts_all 63 条、Q7 的 side 仍是「入口」，「在哪发现」和「渠道信不信」还没拆。Tian 的导出里有第二格（cell_fix2），review.json 没有 cell2。",
+     "suggestion": "周日后一次清掉：页面不显示的旧字段从页面数据里拿掉；入口那 63 条按 v0.5 拆；加 cell2。"
+    },
+    {
+     "issue": "上次复审的问题多数没动，还有 0 条原话的格子",
+     "short": "上次问题没动",
+     "cells": [
+      "整体"
+     ],
+     "severity": "中",
+     "evidence": "仍在 review.json 里：非美国 17 条（britishproblems 7、ScamsUK 6、SoloLivingPH 3、delhi 1）和 DecorReps 5 条；b3-011 仍在「想要」；Q13 藤编仍挂「想要」；b2-034 的 side 是想要、cell 是放不进；pipeline.json 仍写「你核对 0 / 45」；第十一批 1,294 行没标。0 条原话的：v0.5 第 3 层「介入」（v0.3 的规矩是没有原话的格子删掉、不留占位）；Q18 品类需求；N6（电话转述）。",
+     "suggestion": "写发现时不要引这 22 条；pipeline.json 更新。第 3 层等有发现再长。"
+    },
+    {
+     "issue": "当前模型要拿两份文件拼着读，截一句的问题还在",
+     "short": "模型要拼着读",
+     "cells": [
+      "整体"
+     ],
+     "severity": "低",
+     "evidence": "v0.5 只写变化，格子表在 v0.4 里且不改：仍写「Q8 原话 2 条」、入口一行、旧条数；v0.4 的例外（急用、限时会跳过权衡）在新公式里没交代；v0.2 的案例板、重开原页面比对（verified_page 483 条全是 False）仍没写是放弃还是延后。b4-009「6–8 周是行业标准」同一条评论里还写着 I don't recommend buying any sofa online，被截掉了。",
+     "suggestion": "周日后出一份完整的 v0.5（格子表并进来，数字引 counts_all）。原话卡整段显示、高亮截取部分（Tian 在 b4-014 已提）。"
+    }
+   ],
+   "factcheck": [
+    {
+     "claim": "第四批：对 25 · 错 11 · 存疑 9，准确率 69%；36 条要讨论、40 条留言、9 次「应该是这格」",
+     "short": "第四批 69%",
+     "verdict": "对",
+     "source_says": "按导出的判断文件重算，全部一致。但 69% 和前三批的 92% 不能比：这次判的是格子，前三批判的是 7 个方向；这 45 条是按「最新、最不确定」挑的，不是随机样本。",
+     "where": "复盘_2026-11-13_第四批.md；runs/tian_judgments/2026-11-13_after_batch4.json"
+    },
+    {
+     "claim": "标签规则 v3 的依据：b4-030、032、044 是「买房、不再搬家才肯买好家具」",
+     "short": "v3 的三条依据",
+     "verdict": "说过头",
+     "source_says": "030、044 是。b4-032 原文是一位财务分析师说：\"Newness\" has a higher value to consumers with furnishing… the longevity that YOU value ISN'T valued by today's consumers，讲的是消费者要新、不看重耐久。b4-044 Tian 判的是「对」，不在错的 11 条里。",
+     "where": "标签规则.md v3；复盘第四批 A；raw batch4 thread 1wj5si6"
+    },
+    {
+     "claim": "Tian 看过的 26 串里 25 串点了「整串是案例」，25 串写了留言",
+     "short": "25 / 26 是案例",
+     "verdict": "对",
+     "source_says": "25 / 26 对；留言是 26 串都写了。机器对同样 26 串的 worth_case 是 13 真 13 假。",
+     "where": "提案_案例库.md；tian_judgments；threads.json"
+    },
+    {
+     "claim": "v0.5：原话能回答「在哪里看见」（第七批入口表 33 处）",
+     "short": "入口表 33 处",
+     "verdict": "对",
+     "source_says": "counts.json 合计 33：Pinterest 8（多数在骂 AI 图和广告）、门店 7、FB 二手 3、Instagram 2。",
+     "where": "调研模型_v0.5.md；runs/2026-11-13_reddit-batch7/counts.json"
+    },
+    {
+     "claim": "Q24 大理石桌那串：三家里选 Room and Board；看规格比看牌子重要；别买大理石；三家是营销公司，去找本地的人；送货和客服是噩梦",
+     "short": "Q24 大理石桌",
+     "verdict": "对",
+     "source_says": "都对得上：Don't do it. Everything leaves a mark（59 赞）；Room and Board is head and shoulders above the other two（19 赞）；Those three are marketing organizations（9 赞）；contract grade（5 赞）。「送货客服是噩梦」只有 1 条（7 赞），下面有 1 条反例（4 赞）。楼主最后写：I'm going to try to find someone local to work with。",
+     "where": "questions.json Q24；raw batch4 thread 1xhwdxn"
+    },
+    {
+     "claim": "帖子地图 1umi7p7：最高赞（75）说 West Elm、Crate and Barrel 不是厂家只是贴牌；芝加哥匠人说沙发约 $4000 加面料，超过 $5500 是买牌子",
+     "short": "帖子地图的数字",
+     "verdict": "对",
+     "source_says": "they are not a manufacturer. However they do slap their name on furniture as if they are（75 赞）；A sofa is in the $4000 range, plus fabric… if it's over about $5500, you're paying for the name and not quality（7 赞）。",
+     "where": "threads.json；raw batch4 thread 1umi7p7"
+    },
+    {
+     "claim": "N1：买家能接受等，一延期就要补偿、不推荐，甚至当成骗局",
+     "short": "N1 能接受等",
+     "verdict": "说过头",
+     "source_says": "上次复审后 N2 已改成「只有 1 条站得住」，N1 没同步，还标着「要讲」。第四批多了 1 条真买家的话（b4-045 楼主：They also have a long waiting period, but that is a much smaller problem）。b4-009「a 6-8 week turn around is STANDARD」是评论者在教训楼主，不是买家自己接受。",
+     "where": "notes.json N1；review.json b4-009、b4-045；raw batch4 thread 1tuxgqo"
+    },
+    {
+     "claim": "中间价位有空白，对 BW 反而有利",
+     "short": "中间价位有利",
+     "verdict": "说过头",
+     "source_says": "随机抽这格 30 条：12 条在找这一档，11 条说这一档不存在或是贵的垃圾（For 2k you're definitely in that weird middle ground where you're paying more but not getting the real quality jump），4 条说答案是二手，3 条说不清。有需求是真的，「有利」只说了一半。",
+     "where": "调研模型_v0.4.md 更正段（v0.5 沿用）；各批 tags_all.jsonl"
+    },
+    {
+     "claim": "案例 C1：网友用 $1150 在 Wayfair 买到 PB 卖 $5200 的同款餐边柜",
+     "short": "PB 同款 $1150",
+     "verdict": "对",
+     "source_says": "a very long oversized family room credenza that was $5200, found the exact one through Wayfair for $1150（28 赞）。",
+     "where": "cases.json C1；raw batch3 thread 1x61cvz"
+    },
+    {
+     "claim": "Tian 在 b4-014 的留言：「市场不存在」是对我们品牌最大的一个威胁",
+     "short": "市场不存在",
+     "verdict": "说过头",
+     "source_says": "这是 1 条 8 赞的评论，正文贴的是 perplexity.ai 的摘要，讲的是整体零售的两极分化（引 Deloitte），没有家具的数据。值得验证，但 1 条 AI 摘要撑不起「最大的威胁」；更实在的反面证据是那 11 条「这一档是贵的垃圾」。",
+     "where": "tian_judgments b4-014；raw batch4 thread 1l10yoe"
+    }
+   ]
+  },
+  {
+   "date": "2026-11-13",
+   "model": "Fable 5.2 (claude-fable-5-2)",
+   "trigger": "复盘第四批 · 第二轮（30 条：对 15、错 2、存疑 13），主线和 Tian 都认为第二层格子要重整",
+   "summary": "「第二层要重整」站得住，但「顶层没问题」说早了：这轮最硬的问题（代价和怕分不清）就在顶层定义上。另外，重整的依据全部来自第四批这一批、且是专挑最不确定的 30 条，新格子定稿前必须拿别的批次试装。\n\n第 4 项的数（复审员自己的读法，Tian 可以不同意）：30 条里干净落在一格的 8 条（003、004、005、011、012、014、015、030）；放不进任何格的 9 条（002、007、010、013、019、021、023、025、027）；同时属于两格的 7 条（001、006、008、016、017、018、020）；格子大致对但名字不准或待定的 6 条（009、022、024、026、028、029）。",
+   "issues": [
+    {
+     "issue": "「顶层没问题」是先有结论。代价和怕的边界是 v0.4 顶层定的（确定 = 代价，不确定 = 怕），「已经发生的坏经历」两边都不是",
+     "short": "代价和怕分不清",
+     "cells": [
+      "代价",
+      "怕"
+     ],
+     "severity": "高",
+     "evidence": "b4r-007、008、027；帖子留言 1uwtpj8（「这样分不是非常成功」）、1wc3gkx（「价格的害怕」）；复盘自己的第 2 类",
+     "suggestion": "讨论第二层之前，先定「已发生的经历」算什么。建议把它当作原话的类型，不当作一条边"
+    },
+    {
+     "issue": "重整依据只有第四批，而且偏。30 条里 25 条来自定向搜索；第五到十批约 1,300 条，Tian 没按格子判过一条",
+     "short": "依据只有第四批",
+     "cells": [
+      "整体"
+     ],
+     "severity": "高",
+     "evidence": "复盘列的 6 串「售后」证据里 4 串是 Pottery Barn，其中 3 串出自同一个搜索词 pottery barn quality gone down。Q29 里主线自己写了这个偏差，复盘没带上",
+     "suggestion": "新格子定稿前，从第五到十批的开放搜索里随机抽 30 条试装"
+    },
+    {
+     "issue": "「售后」正在变成新的大桶",
+     "short": "售后变大桶",
+     "cells": [
+      "送到家麻烦",
+      "说话不算数",
+      "钱拿不回"
+     ],
+     "severity": "高",
+     "evidence": "Tian 归进去的有：二手沙发怎么运（1t1jcat，没有商家）、还没送到（b4r-009）、销售口头答应的送货费（008）、摔碎补发（007）、保修被拒（027）、库存不准（020）。至少是「送到之前」和「送到之后」两件事",
+     "suggestion": "先写「算 / 不算」各两条原话，再决定要不要成组"
+    },
+    {
+     "issue": "「用得着」成了杂物格",
+     "short": "用得着是杂物格",
+     "cells": [
+      "用得着"
+     ],
+     "severity": "中",
+     "evidence": "本轮 7 条，4 条存疑：看腻就换、二手尺寸不合、五年找不到茶几、租房该不该买好；标签规则 v3 把人生阶段塞进来后没验证过",
+     "suggestion": "重整时拆开；v3 停用"
+    },
+    {
+     "issue": "88% 这个数不能用，停止条件也到不了",
+     "short": "88% 不能用",
+     "cells": [
+      "整体"
+     ],
+     "severity": "中",
+     "evidence": "「对」的 15 条里 3 条是「确实放不进」（021、023、025），3 条留言说格子不好（009、020、024）；每轮专挑最不确定的，「连续两轮 ≥95%」永远达不到；206 条「机器已定」从没抽查过（round1_summary.json 自己建议抽 10 条）",
+     "suggestion": "不再报准确率；格子一改，「机器已定」清零重来"
+    },
+    {
+     "issue": "分类不止一套，v0.5 的迁移仍没做（上两次复审都指出过）",
+     "short": "迁移没做",
+     "cells": [
+      "整体"
+     ],
+     "severity": "中",
+     "evidence": "review.json 仍带 direction、stage（9 值）、stance、topic（57 值）；「价格」「等待时间」各两种写法；28 条仍叫「入口」，没有一条 side = 看见；questions.json 的 branch 还是旧五站；b2-034 是 想要 / 放不进；非美国 17 条和 DecorReps 5 条还在；pipeline.json 停在「你核对 0 / 30」。改格提案现在有三套并行：格子选择题 9 题、Q20–22 和 Q28–30、复盘 7 类",
+     "suggestion": "合成一张结构变更卡，重整时一次清掉旧字段"
+    },
+    {
+     "issue": "证据只有 0–1 条的",
+     "short": "证据太少",
+     "cells": [
+      "在哪看见"
+     ],
+     "severity": "中",
+     "evidence": "「看见」这个名字下 0 条；第 3 层空（已声明）；复盘第 6 类「信息不透明」实际只有 b4r-020 一条；第 4 类「是一回事」Tian 直接说的只有 1vdnf93 一处；第 7 类把非目标人群、单品类、二手三件事并成一类",
+     "suggestion": "没到 2 处的不进新格子，先放待收"
+    },
+    {
+     "issue": "复盘漏了 Tian 这轮说的",
+     "short": "复盘有遗漏",
+     "cells": [
+      "整体"
+     ],
+     "severity": "中",
+     "evidence": "品牌和质量绑定（b4r-006）；年龄和人生阶段（013、014）；看见和想要的关系（016、帖子 1v0528r）；价格里的值不值和分期（017、022）；「这种人有多少」（015）。v0.4 删掉的「挑累了」这轮有了真原话（b4r-023 楼主：decision fatigue）",
+     "suggestion": "补进讨论清单"
+    },
+    {
+     "issue": "Tian 的盲区：把帖子读成「我们的赛道」；按帖子主题判原话",
+     "short": "Tian 读成赛道",
+     "cells": [
+      "中间价位没得选"
+     ],
+     "severity": "中",
+     "evidence": "1wmykqj 留言「在找中高端」，楼主原文是 \"I'm looking for CHEAP furniture, I don't need anything fancy or good quality\"，含椅子 $900 以内；b4r-003「正中下怀」，原文前两句是 \"It's total garbage. I'll never buy from them again\"，说的是被中档牌子坑过；b4r-029 说「没人会搜别处买不到的东西」没有证据，同一轮 b4r-030 的楼主正在找；b4r-001、026 判的是帖子主题，不是那句话",
+     "suggestion": "留言里写「对 BW 有利」的，主线回原文再读一遍"
+    },
+    {
+     "issue": "主线的盲区：把 Tian 的留言直接归成 7 类，没回原文",
+     "short": "主线没回原文",
+     "cells": [
+      "整体"
+     ],
+     "severity": "中",
+     "evidence": "见事实核对 4、5、7",
+     "suggestion": "复盘的每条证据先对原文再写"
+    },
+    {
+     "issue": "个别原话不该当证据",
+     "short": "个别原话不可靠",
+     "cells": [
+      "整体"
+     ],
+     "severity": "低",
+     "evidence": "1sjg5m3 像软文（问 RH 的帖子里顺带提 alibaba，只有 2 条评论），b4r-026 出自它；b4r-018 是 -1 赞；30 条里多数是 1–4 赞的评论",
+     "suggestion": "页面显示赞数；1sjg5m3 不收"
+    }
+   ],
+   "factcheck": [
+    {
+     "claim": "复盘：对 15 · 错 2 · 存疑 13，88%，存疑 43%",
+     "short": "第二轮数字",
+     "verdict": "对",
+     "source_says": "按判断文件重算一致"
+    },
+    {
+     "claim": "复盘：判「对」的里面 4 条说格子名不准（009、020、024、029）",
+     "short": "对里 4 条名不准",
+     "verdict": "错",
+     "source_says": "029 判的是存疑；「对」的里面是 3 条"
+    },
+    {
+     "claim": "复盘：另有 27 串帖子留言",
+     "short": "27 串留言",
+     "verdict": "错",
+     "source_says": "这轮 30 条来自 30 串，30 串都有留言（25 条这轮写，5 条第一轮写）。27 是「要讨论」的原话数，也是点了案例的帖子数"
+    },
+    {
+     "claim": "复盘第 1 类：1t1jcat 是售后的证据",
+     "short": "1t1jcat 售后",
+     "verdict": "说过头",
+     "source_says": "r/FacebookMarketplace，楼主问私人卖家不送货、二手沙发怎么运；b4r-018 是「$100 的沙发变成 $200+」。没有商家，不是售后"
+    },
+    {
+     "claim": "复盘第 4 类：中间价位和向上比大牌是一回事（b4r-001、003、004、005、027）",
+     "short": "两格是一回事",
+     "verdict": "说过头",
+     "source_says": "027 Tian 原话是「这不是在向上比，是已经买了大牌」，原文是 Arhaus $10k 沙发两年塌、保修被拒；001 原文是劝别买 10 年保修、「6–8 年就想换」，和价位无关"
+    },
+    {
+     "claim": "复盘第 3 类：1rfpmq3「不好退」",
+     "short": "1rfpmq3 不好退",
+     "verdict": "对",
+     "source_says": "正文没提，但楼主在评论里说 \"we could return I suppose but we would have to pay restocking fees\"；最高赞（2,115）劝她退"
+    },
+    {
+     "claim": "复盘第 6 类：信息不真实 / 不透明（b4r-020、025）",
+     "short": "信息不透明",
+     "verdict": "说过头",
+     "source_says": "020 对：\"the website does. not. know. when something is sold out\"。025 原文是「三家都从亚洲采购」，是产地；Tian 也只说「放不进、对亚洲警惕」"
+    },
+    {
+     "claim": "Q27：两句 slogan 原文",
+     "short": "slogan 原文",
+     "verdict": "对",
+     "source_says": "逐字都在（1unqi0a、1va07as 各一条评论）；前一句只有 1 赞"
+    },
+    {
+     "claim": "Q28：1vdnf93 楼主原话",
+     "short": "1vdnf93 原话",
+     "verdict": "对",
+     "source_says": "\"I can't find any store that's higher end than ikea without a single bookshelf being more than a grand\""
+    },
+    {
+     "claim": "v0.5：真实原话约 1.8 万行",
+     "short": "1.8 万行",
+     "verdict": "对",
+     "source_says": "11 个批次 raw.jsonl 合计 18,524 行"
+    }
+   ]
+  },
+  {
+   "date": "2026-11-13",
+   "model": "Fable 5.2 (claude-fable-5-2)",
+   "trigger": "结构变更：v0.6（两层顶层 + 第 2 层格子重整）；Tian 问能不能试装",
+   "summary": "两层顶层（看见 / 买前 / 买后 + 天平）站得住，数字也能复算；问题不在树，在「买前 / 买后」的界线规则没写全、买后格子还是示意、「不计」太大。这些靠试装时多记一个字段就能避免返工。\n\n第 4 项（batch4r1 30 条按 v0.6 读）：干净 12；同时落两处 7；没格 7；勉强 4。没格占 23%，但这 30 条本来就是专挑最难的。\n\n结论：可以试装。前提是按第 1、2、3、7 条的做法记录（说话人状态字段、买后不用示意格、收窄「不计」、先定格子编号表）。",
+   "issues": [
+    {
+     "issue": "买前 / 买后界线有三处没写进 v0.6，两份依据文件互相打架：买后回顾里讲「为什么买」留在想要；已下单在等货暂归担忧；劝告靠语气分",
+     "short": "买前买后界线没写全",
+     "cells": [
+      "整体"
+     ],
+     "severity": "高（规则，不是树）",
+     "evidence": "想要 252 格次里 56 是买后回顾；「货迟迟不来」59 条里 42 条是已下单、已经拖了；batch9#471 同一句在想要文件算「尺寸合我家」，在担忧文件算「不算 → 买后」；batch4#1660 自己的沙发一年塌了却在「贵也不值」；担忧文件自认一成可争",
+     "suggestion": "试装时每条另记「说话人状态：没买 / 已下单在等 / 已到货」，格子只记内容。以后界线怎么定都只是重新映射，不用重读"
+    },
+    {
+     "issue": "买后会是最大的一块，但格子是示意；「和买前一一对上」不成立",
+     "short": "买后格子是示意",
+     "cells": [
+      "买后"
+     ],
+     "severity": "中",
+     "evidence": "已知至少 275 条（222 + 53）；旧「代价」抽 14 条有 4 条是买后回顾；出事 5 格装不下「坐着不舒服」13、被骗 5、异味生虫 4；买前 21 格，买后 9 格",
+     "suggestion": "买后只标 满意 / 出事 + 对应的买前格名 + 一句话，不用 9 个示意格"
+    },
+    {
+     "issue": "「不计」和「放不进」没分开，10% 警报会失灵",
+     "short": "不计太大",
+     "cells": [
+      "整体"
+     ],
+     "severity": "中",
+     "evidence": "担忧 962 条里不计 228（24%），想要 598 条里 51；抽 10 条不计，3–4 条是买后满意",
+     "suggestion": "不计只限卖家口吻、重复、非家具、非美国；其余算放不进；这 279 条重读"
+    },
+    {
+     "issue": "「时机」一半在树上，一半没家",
+     "short": "时机没家",
+     "cells": [
+      "看见了但现在不想要"
+     ],
+     "severity": "中",
+     "evidence": "旁支 60 条里 32 条是「先凑合、摸清空间再买好的」（batch4#2571、batch5#900），是将来的买家；「条件到了」28 条（b4r-014）在 v0.6 没位置",
+     "suggestion": "做成标记「时机：没到 / 到了」，不叫「不是目标人群」"
+    },
+    {
+     "issue": "替代选择（二手、Temu / 平替、找木工或工厂）没位置",
+     "short": "替代选择没位置",
+     "cells": [
+      "价格"
+     ],
+     "severity": "中",
+     "evidence": "旧「价格」263 条是最大格，抽 7 条 4 条是这个（b9-045、b6-027、b10-036、b10-018）；复盘第 7 类、Q17 提过，v0.6 没接",
+     "suggestion": "横向标记「拿什么来比」，不立格"
+    },
+    {
+     "issue": "「中档好货」两头靠",
+     "short": "中档好货两头靠",
+     "cells": [
+      "中档好货"
+     ],
+     "severity": "中",
+     "evidence": "依据文件按「$500–3,000 固定区间」归的 36 条，v0.6 改成按品牌档位后没重归；报预算的句子（batch5#957）按规则 2 是代价 · 价格；反面（b4r-004）放在「贵也不值」",
+     "suggestion": "加一行：报数字 → 代价；要这一档的东西 → 中档好货；不信有这一档 → 贵也不值"
+    },
+    {
+     "issue": "分类不止一套；格子名三种写法",
+     "short": "格子名三种写法",
+     "cells": [
+      "整体"
+     ],
+     "severity": "中",
+     "evidence": "review / counts_all / questions 全是 v0.4 的格子，外加 direction、stage、stance、topic、35 个旁注；模型、图、依据文件写法不同（靠不靠得住 / 这家靠不靠得住；贵也不值 / 怕贵的也不值；满意 / 没事）",
+     "suggestion": "试装前定一张格子编号表，结果直接替换旧字段"
+    },
+    {
+     "issue": "旧版内容漏了",
+     "short": "旧版内容漏了",
+     "cells": [
+      "整体"
+     ],
+     "severity": "中",
+     "evidence": "设计师旁支 15 条；v0.5 欠的「入口」拆分（63 条仍叫入口，「看见」下 0 条）；藤编专属 10 条被划出树外（BW 主打品类）；美国造加分 13；没写「其余沿用 v0.5」；没有想要、代价的旧格 → 新格对照表",
+     "suggestion": "补一张覆盖检查表"
+    },
+    {
+     "issue": "证据薄的格",
+     "short": "证据薄",
+     "cells": [
+      "整体"
+     ],
+     "severity": "中",
+     "evidence": "不写清楚 11（开放 0）；放家里合不合适 8；送来是坏的 12；靠不靠得住开放 1 / 35；买后满意 4 格、代价 4 格、看见都没有新数；规则 4 只有 2–3 条",
+     "suggestion": "试装后再看，不够 2 处开放的先待收"
+    },
+    {
+     "issue": "两个人的盲区",
+     "short": "两人盲区",
+     "cells": [
+      "整体"
+     ],
+     "severity": "中",
+     "evidence": "Tian：「租房 / 阶段没到 = 不是目标人群」没有原话依据，且和「BW 受众可能也偏年轻」相反；「怕只是中间商」开放只 6 / 42，混了业内人和找同款省钱的。主线：用「BW 改报价能不能消掉」分买家心里的格子，把第 3 层搬进了第 2 层；归类和评分是同一个模型一个人读",
+     "suggestion": "全量前随机 100 条，让两个互不通气的子代理各归一遍，一致率低的格先合并"
+    }
+   ],
+   "factcheck": [
+    {
+     "claim": "v0.6：想要、担忧各逐条读约 600–960 条",
+     "short": "读了多少",
+     "verdict": "对",
+     "source_says": "598 / 962"
+    },
+    {
+     "claim": "担忧文件：例句都是原文的精确子串",
+     "short": "例句是原文",
+     "verdict": "对",
+     "source_says": "两份文件 51 条例句全部逐字在 raw 里"
+    },
+    {
+     "claim": "没法试坐 38 条、开放 21，开放占比最高",
+     "short": "没法试坐",
+     "verdict": "对",
+     "source_says": "55%，次高是好用、用得久 50%"
+    },
+    {
+     "claim": "想要文件：batch9#471「喜欢但放不下」算尺寸合我家",
+     "short": "batch9#471",
+     "verdict": "错",
+     "source_says": "已经买了；原文问 \"What should I change so things look more visually balanced\"，UPDATE 说重新摆过 \"feels WAY better\"。是买后，也不是放不下"
+    },
+    {
+     "claim": "复盘：价越高担忧越重（b7-018、b10-008）",
+     "short": "价越高担忧越重",
+     "verdict": "说过头",
+     "source_says": "b10-008 是买后：花了大钱所以更失望；b7-018 被引的那句只说 $2k 起、等 12 周，同帖末句 \"refuse to spend four figures on something that might be styrofoam\" 才算"
+    },
+    {
+     "claim": "v0.6：代价 / 担忧随机 30 条 26 条分得干净",
+     "short": "26/30",
+     "verdict": "说过头",
+     "source_says": "复盘里按现定义是 22，26 是按辅助问法；出题和判分是同一个模型"
+    },
+    {
+     "claim": "notes N1 / N2：DreamSofa 报 5–7 周实际 12 周",
+     "short": "DreamSofa 交期",
+     "verdict": "对",
+     "source_says": "\"told 5-7 weeks for production… Production lasted 12 weeks\""
+    },
+    {
+     "claim": "cases C1：PB 三单、答应退 2/3 送货费、只退一笔、拒付后约一个月被禁购",
+     "short": "PB 拉黑",
+     "verdict": "对",
+     "source_says": "楼主正文逐项一致"
+    },
+    {
+     "claim": "担忧文件：trial-022 货已到、晚了近一倍不在意",
+     "short": "trial-022",
+     "verdict": "对",
+     "source_says": "\"45 day production… almost double… I wasn't in a rush\""
+    },
+    {
+     "claim": "担忧文件：batch4#1660 属于「贵也不值」",
+     "short": "batch4#1660",
+     "verdict": "说过头",
+     "source_says": "\"Don't get room and board! I hate how quickly our sofa showed its age\"，是自己买后的事，应归买后"
+    }
+   ]
+  },
+  {
+   "date": "2026-11-14",
+   "model": "Fable 5.2 (claude-fable-5-2)",
+   "trigger": "试装方案提案 A–F（抓取/试装方案_提案_2026-11-14.md）；Tian 要求复审学习机制、买后偏差、卖家口吻、从下往上和饱和、搜索词进树",
+   "summary": "方向都对，但提案的地基「开放搜索」现在有两套互相打架的定义，而且约三分之二的搜索词其实指向格子；C 的警报和 E 的饱和都建在它上面，先修这个再试装。Tian 要的学习机制，提案里只有「攒例子」，没有「怎么量学会了、什么时候 Tian 可以退出」。\n\nA–F 判定：A 说话人状态 改了再做（替换旧 stage；拿不准改成两个子代理判得不一样；补量尺）｜B 买后只标满意/出事 可以照做（加记楼主还是评论、搜索词正向还是负向；正向词 8 个带回 1,317 条，负向 7 个带回 1,532 条——满意的比例由搜什么词决定）｜C 三个去向 改了再做（先修开放定义；非美国、重复、卖家版块机器筛；卖家分刷牌子和业内人）｜D 时机标记 可以照做｜E 从下往上 改了再做（先用没标的 260 串 + 约 72 串中性串试点，翻列表按时间不按热度、不只 r/furniture；每串 3–5 个主题、两个看不到树的子代理各写一遍；新主题定义和 5% 停止线）｜E 旁支 改了再做（做成搜索词登记表挂在流程上，不做树的分支）｜F 可以照做（格子编号表排第一；双子代理 100 条从中性串跨批抽）",
+   "issues": [
+    {
+     "issue": "「开放搜索」两套定义",
+     "short": "开放搜索两套定义",
+     "cells": [
+      "整体"
+     ],
+     "severity": "高",
+     "evidence": "提案的 228 串 = raw 里 direction_hint=0（76 个词）；counts_all.json 的 open_queries 是另外 19 个词，其中 18 个在 raw 里标 direction 1 或 7",
+     "suggestion": "定一张搜索词登记表，每个词只有一个「指向哪格 / 不指向」"
+    },
+    {
+     "issue": "「开放」里多数词指向格子",
+     "short": "开放词多数指向格子",
+     "cells": [
+      "整体"
+     ],
+     "severity": "高",
+     "evidence": "76 个词里有 is restoration hardware worth it、nicer than ikea but not restoration hardware、renting so not buying nice furniture、kids and pets so cheap furniture until、wabi sabi furniture where to buy 等；第 1 次复审已把 renting 那个词叫「定向」。按词面判，真正中性的约 24 个词、约 72 串（复审员估计）",
+     "suggestion": "警报和「普不普遍」只用中性词的串；其余改标定向"
+    },
+    {
+     "issue": "开放里混着非美国和卖家版块",
+     "short": "开放里有非美国",
+     "cells": [
+      "整体"
+     ],
+     "severity": "中",
+     "evidence": "开放 228 串里约 16 串、约 930 条（约 9%）来自 IndiaBusiness、IndianHomeDecor、AskIndia、AskAnAustralian、UKFrugal、AUfrugal、PinduoduoShoppingPH、ShopeePH、CanadaRoom 等；FoshanFurnitures 是卖家版",
+     "suggestion": "版块名单机器直接筛，扩充 K4，不用 Tian 判"
+    },
+    {
+     "issue": "「卖家口吻」把两种人混了",
+     "short": "卖家口吻混两种人",
+     "cells": [
+      "整体"
+     ],
+     "severity": "中",
+     "evidence": "刷牌子的：同一作者在 17 串发 20 条，12 条只推 Macy's。业内人：大理石桌那串「三家是营销公司」出自自称 I am in the industry 的人，正是 Q24 里 Tian 说「非常非常重要」的内容",
+     "suggestion": "刷牌子的不计；业内人保留并标「业内」"
+    },
+    {
+     "issue": "学习机制没有量尺",
+     "short": "学习机制没量尺",
+     "cells": [
+      "整体"
+     ],
+     "severity": "高",
+     "evidence": "提案 A 只写「判过的写进规则当例子」「接进 v0.3 / v0.4」；v0.6 没写沿用旧机制；pipeline.json 还停在「你核对 0 / 30」；机器自报把握不可靠：b3-020 label_confidence 是 high，cell_fit 却是「勉强」",
+     "suggestion": "Tian 判过的留一半做考题、永不当例子；每轮报机器和 Tian 的一致率；写明退出线（例如连续两轮 90%，Tian 只抽查 10%，数值由 Tian 定）；卖家口吻先用硬信号筛，Tian 只看分不出的，每轮不超过约 30 条"
+    },
+    {
+     "issue": "饱和规则没定义「新主题」",
+     "short": "饱和没定义新主题",
+     "cells": [
+      "整体"
+     ],
+     "severity": "高",
+     "evidence": "旁注 35 个里约 10 个只有 1 条，长尾永远有「新」；「300–500 串」没有依据；「约 1 万条开始重复」材料里没有重复度记录",
+     "suggestion": "「新主题」= 至少在 2 串里出现、并不进已有主题；停止线 = 新主题占累计不到 5%，连续 3 轮；饱和只说明这个来源翻到头了，不代表市场"
+    },
+    {
+     "issue": "分类不止一套（上次已提，未变）",
+     "short": "分类不止一套",
+     "cells": [
+      "整体"
+     ],
+     "severity": "中",
+     "evidence": "review.json 仍是 v0.4 的 17 格，「等待时间」「价格」各两种写法；另有 direction 8 值、stage 9 值、stance 3 值、topic 57 值；cases.json angle 11 值，questions branch 6 值；提案又加状态、去向、时机、拿什么来比 4 栏",
+     "suggestion": "新栏进来时旧栏同步停用；stage 基本就是「说话人状态」，直接替换"
+    },
+    {
+     "issue": "凭空的格子 / 没读的数据",
+     "short": "有格子 0 条、四成没标",
+     "cells": [
+      "整体"
+     ],
+     "severity": "中",
+     "evidence": "页面数据里 v0.6 的格子全是 0 条；买后 9 格是示意；「看见」0 条；第 3 层空。第 11–19 批共 260 串、11,217 条（约 40%）没有任何标签",
+     "suggestion": "这 260 串正好做 E 的免费试点"
+    },
+    {
+     "issue": "最新一批放不进多少",
+     "short": "放不进率算不出",
+     "cells": [
+      "整体"
+     ],
+     "severity": "中",
+     "evidence": "第 11 批以后没标；旧数 353 / 1,809 ≈ 20%，早已超过 10% 线",
+     "suggestion": "警报要等新归类后才有意义"
+    },
+    {
+     "issue": "上次复审的一条没接",
+     "short": "上次一条没接",
+     "cells": [
+      "整体"
+     ],
+     "severity": "低",
+     "evidence": "第 5 次复审说「用 BW 改报价能否消掉来分格，是把第 3 层搬进第 2 层」，提案 A–F 没回应；pipeline.json「抓取 3,858」过期",
+     "suggestion": "写进 F 的清单"
+    },
+    {
+     "issue": "两个人的盲区",
+     "short": "两人盲区",
+     "cells": [
+      "整体"
+     ],
+     "severity": "中",
+     "evidence": "Tian：「满意的人少发帖」合理，但在这批数据里也是假设。主线：「据此更正」直接采纳，没查数据；228 串、300–500 串都没核就写进提案",
+     "suggestion": "两条都标「假设」"
+    }
+   ],
+   "factcheck": [
+    {
+     "claim": "提案 E：657 串、开放 228 串、10,913 条、每词前 3 串",
+     "short": "提案 E 的数",
+     "verdict": "对",
+     "source_says": "复算一致，76 词 × 3 串；但「开放」定义有问题"
+    },
+    {
+     "claim": "counts_all：n_open 来自 19 个不指向格子的词",
+     "short": "n_open 的词",
+     "verdict": "错",
+     "source_says": "19 个里 18 个在 raw 里标 direction 1 或 7，只有 1 个标 0"
+    },
+    {
+     "claim": "Q27：1unqi0a no such thing as good furniture that is both new and not expensive",
+     "short": "Q27 原话",
+     "verdict": "对",
+     "source_says": "逐字在；前一句是 two kinds of furniture: expensive and cheap crap"
+    },
+    {
+     "claim": "Q28：ChicagoSuburbs 1vdnf93 楼主在找中间价位",
+     "short": "Q28 中间价位",
+     "verdict": "对",
+     "source_says": "逐字在；但这串是用 nicer than ikea but not restoration hardware 搜来的，不能证明普遍"
+    },
+    {
+     "claim": "Q19：EtsySellers 1tmcln9「很多买家说一看到 AI 图就不买」",
+     "short": "Q19 AI 图",
+     "verdict": "说过头",
+     "source_says": "楼主是卖刻字杯的卖家，说的是自己：personally, seeing an AI product image makes me NOT want to buy it；评论区未逐条读"
+    },
+    {
+     "claim": "notes N1：「只有 b3-020、b4-045 两条真买家」",
+     "short": "N1 真买家",
+     "verdict": "说过头",
+     "source_says": "b4-045 还没买，预算 $500–2000 在挑：long waiting period, but that is a much smaller problem；N2 又写「只有 1 条」，两处对不上"
+    },
+    {
+     "claim": "notes N1 / N2：DreamSofa 报 5–7 周实际 12 周",
+     "short": "DreamSofa",
+     "verdict": "对",
+     "source_says": "told 5-7 weeks for production… Production lasted 12 weeks，补偿起初 5%"
+    },
+    {
+     "claim": "Q24：三家是营销公司不是工厂；去找本地石材厂、匠人",
+     "short": "Q24 营销公司",
+     "verdict": "说过头（轻）",
+     "source_says": "前半出自自称业内的人：Those three are marketing organizations；后半只找到楼主 EDIT find someone local to work with，搜 local stone、fabricator 无结果"
+    },
+    {
+     "claim": "Q32（Tian）：约 1 万条开始重复",
+     "short": "1 万条重复",
+     "verdict": "无法核实",
+     "source_says": "材料里没有重复度记录；跨批重复的帖子只有 2 串"
+    },
+    {
+     "claim": "cases.json C1 / C2 的引文",
+     "short": "案例引文",
+     "verdict": "对",
+     "source_says": "45 条引文全部逐字在 raw 里"
+    }
+   ],
+   "followup": {
+    "date": "2026-11-14",
+    "asked": "Tian：演变历史怎么展示才能 trace back 哪里出了问题；整个机制健不健康（必查第 7 条）",
+    "history": "只做「每版一行」不够：问题不出在某一版，出在同一个问题跨了好几版没关掉。办法：同一张时间线上加「问题线」——每个复审问题一条横线，从首次提出画到被关掉，没关的一直画到最右，线越长卡得越久。沿用帖子地图（时间轴 + 分栏 + 一行细节 + 折叠原话）和复审面板，不做新图。最要紧的两个数：每次结构变化依据的原话里，中性词来的几条、Tian 核对过几条。",
+    "health": "纠错在变好（论断错和说过头在减少，引文 45/45 逐字可查，提案都先审再做）；结构在原地打转（4 天 6 版，4 条问题线跨 3–5 次复审没关，每次复审后是出新结构而不是关旧问题；饱和、不算比例、说话人状态都是 v0.1 已有的东西又找回来）；学习没量过（46 条基准从没重打，95% 门槛一次没到）；产出为零（发现 0 条，11–19 批没标）。没有越走越偏。主线「从没从原话重新长过」基本对但不完整：分类层重长过，采集层从没离开 7 个假设。",
+    "advice": "下一步先关问题线，不出 v0.7：统一「开放」定义、把分类收成一套、跑 46 条基准；试装后用同一把尺再量一次。"
+   },
+   "followup2": {
+    "date": "2026-11-14",
+    "asked": "一致率门槛、新考卷、搜索词中性口径、版块名单怎么选（Tian：需要专业的来看）",
+    "threshold": [
+     "指标：一条可多格，用 Krippendorff's alpha 或每格单算 kappa；原始一致率只并排报（通行）",
+     "门槛：Landis & Koch kappa 0.61–0.80 相当一致、0.80 以上几乎完全；Krippendorff alpha ≥0.80 可靠、0.667–0.80 只能试探性结论（通行）",
+     "v0.3 原始 95% 对 20 多格不现实，应废掉（判断）",
+     "顶层和说话人状态 ≥0.80；细格整体 ≥0.67 逐格报；单格 <0.60 合并或重写定义（判断）",
+     "Tian 隔 1–2 周重判看自己的一致率，是机器天花板；机器不比 Tian 对自己低超过约 0.05 或到门槛，连续两套考卷达到才改抽查（判断）",
+     "卖家口吻不用 kappa，报抓到几成、标对几成（判断）"
+    ],
+    "exam": [
+     "考卷至少 100 条（50 条误差约 ±0.13，分不清 0.67 和 0.80），例子另备每格 3–5 条，永不混用",
+     "分层每格至少 5 条约 105 条 + 中性来源随机约 50 条，分开报",
+     "现有 206 条判定是对机器旧标签说对错（只 15 条有 cell_fix）、看着标签判（锚定）、非随机，不能直接当考卷",
+     "Tian 看不到机器标签，从 v0.6 格子表自己选格判约 100 条；隔几天打乱重判 30–50 条；共约 150 次判断，只做一次"
+    ],
+    "neutral": [
+     "原则：看有没有预设要量的结果（哪一格、正负）；只限定品类、房间是分层，不算偏（通行）",
+     "登记表拆三栏：指向格子（有/无）、情感（正/负/无）、范围（品类/房间/阶段/渠道）；警报只用指向无、情感无的词",
+     "(a) 只点品类：对格子中性，范围记品类；sofa 和 sideboard 应统一",
+     "(b) 问去哪买：对天平中性，对「看见」定向且偏没买的人",
+     "抽查草稿 10 个：8 对 2 不一致（sideboard、buying furniture online experience）",
+     "更正自己：上轮「中性约 24 个」偏松，严口径 6 个更对；6 个词 18 串算不了警报，更说明要翻版块"
+    ],
+    "subs": [
+     "偏差去不掉，只能事先定规则、记录、分层报告（通行）",
+     "先定标准再看内容：美国为主、买家具是正题、近 90 天发帖量够",
+     "每版块取同样多串（如各 50），版块当分层记",
+     "写明已知偏向：BuyItForLife 偏耐用、SofaSnobs 偏沙发高价、Frugal 偏价格、malelivingspace 偏晒图",
+     "加 2–3 个非家具爱好者版块：FirstTimeHomeBuyer、homeowners、Apartmentliving",
+     "主题至少在 3 个版块出现才算普遍",
+     "筛「是不是在讲买家具」用机械规则，不用模型判，记录筛掉比例"
+    ]
+   }
+  }
+ ]
+}

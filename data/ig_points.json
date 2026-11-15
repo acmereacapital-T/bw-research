@@ -1,0 +1,408 @@
+{
+ "date": "2026-11-14",
+ "note": "IP = IG 介入点（IG Intervention Point）：一个从案例长出来、IG 能回应的买家问题。IP0 = 上线被看见；IP1 交期；IP2 退换运费；IP3 材料；IP4 谁做的/图是不是真的。介入两页格式：以 IG 介入点为单位（4 个）。第 1 页：小树（主格实心/副格空心）、买家卡在哪（案例原话+编号）、现在 vs 做了之后、用哪几条帖子+哪个 Highlight、需要 Nico 给的信息、IG 的边界；第 2 页：帖子明细（日期、用哪张现有图、文案草稿）+ 还缺的事实。answers = 回答哪个案例页的「想一想」。全部是假设。",
+ "points": [
+  {
+   "id": "IP0",
+   "name": "上线：先被看见",
+   "title": "上线：11/22 前怎么预热、当天怎么上",
+   "cells": [
+    "S0"
+   ],
+   "cells_secondary": [
+    "F1"
+   ],
+   "stuck": [
+    {
+     "case": "C22",
+     "who": "楼主",
+     "en": "I’m a bit hesitant to buy without being able to try it in person and also skeptical of Instagram popular brands",
+     "zh": "不能试坐有点犹豫，也怀疑IG爆款品牌",
+     "hl": [
+      "skeptical of Instagram popular brands",
+      "try it in person"
+     ],
+     "pos": false
+    }
+   ],
+   "answers": {
+    "case": "C22",
+    "q": "如果买家在IG刷到BW，她去哪找「用了两年」的人？",
+    "a": "上线前先让人记住日期、看到局部和「谁做的」线索；上线当天主页就有交期、退换、材料、FAQ 四个答案（假设）"
+   },
+   "now": "IG 每条约 18 个账号看到，新关注 0；主页没有网站链接和常驻答案",
+   "after": "11/19 有一条预告；11/22 上线帖讲清在哪做、按单做、要等多久",
+   "posts": [
+    "R1",
+    "R2"
+   ],
+   "highlight": null,
+   "need_info": [
+    "网站上线时间和链接",
+    "愿意公开的工坊事实（上线帖用）"
+   ],
+   "limit": "IG 只能让人看见、记住；流量靠投放或合作，要另定",
+   "detail": [
+    {
+     "post": "T1",
+     "date": "11/17",
+     "image": "03 长凳藤编局部裁切",
+     "copy": "11.22"
+    },
+    {
+     "post": "P2",
+     "date": "11/22 上线",
+     "image": "1 编织/接合局部近景（现有图裁切）",
+     "copy": "We're open. Here's who makes it, how, and why it costs this. …（旁白 5 句）"
+    }
+   ]
+  },
+  {
+   "id": "IP1",
+   "title": "交期：先讲清会等多久、过程中会发生什么",
+   "cells": [
+    "G1"
+   ],
+   "cells_secondary": [
+    "G2",
+    "F11",
+    "C3"
+   ],
+   "stuck": [
+    {
+     "case": "C24",
+     "who": "楼主",
+     "en": "I can deal with a long wait. What I can’t deal with is spending thousands of dollars and potentially having nothing to show for it.",
+     "zh": "等久我能忍，怕的是花几千块啥也没拿到",
+     "hl": [
+      "long wait",
+      "nothing to show for it"
+     ],
+     "pos": false
+    },
+    {
+     "case": "C3",
+     "who": "网友G",
+     "en": "when you can’t [reach] a human at all, and the automated emails seem so generic.. it only feels more like a scam.",
+     "zh": "找不到真人、只有模板邮件，更像骗局",
+     "hl": [
+      "a human at all",
+      "feels more like a scam"
+     ],
+     "pos": false,
+     "side": "网站 / 客服那边的事（IG 做不到）"
+    }
+   ],
+   "answers": {
+    "case": "C24",
+    "q": "如果 BW 要等好几周，买家看到第几次改期会怀疑货不来？",
+    "a": "第一次改期没事先说，就开始怀疑。IG 先把「按单做、大约 [X–Y] 周、中间会告诉你」讲在前面，让等待落在预期里（假设）"
+   },
+   "now": "IG 上看不出交期，也看不出下单后会发生什么",
+   "after": "看到 BW 的人在下单前就知道：按单做、大约 [X–Y] 周、中间会收到哪几次消息",
+   "posts": [
+    "R4",
+    "R7"
+   ],
+   "highlight": null,
+   "need_info": [
+    "真实交期区间（按品类）——页面上所有 [X–Y] 周都等这个数"
+   ],
+   "limit": "IG 只能事先讲清预期；下单后的进度邮件、找得到真人，要靠网站和客服",
+   "detail": [
+    {
+     "post": "P3",
+     "date": "11/27–30",
+     "image": "现有成品图（比例对的那张，标注渲染图）",
+     "copy": "Order now, home by [late Dec–Jan]. Made to order — we’ll tell you the date before you pay.",
+     "img": "07",
+     "answers_cells": [
+      "G1",
+      "G2",
+      "F11"
+     ]
+    },
+    {
+     "post": "P6",
+     "date": "12/18",
+     "image": "编织/接合局部裁切 + 文字卡",
+     "copy": "Why it takes [X] weeks: weaving, finishing, packing, ocean freight. Every step, on purpose.",
+     "img": "03",
+     "answers_cells": [
+      "G1",
+      "G2",
+      "F11"
+     ]
+    }
+   ],
+   "missing": [
+    "[X–Y] 周、到美国时间要 Nico 给"
+   ],
+   "post_lines": [
+    {
+     "post": "R4",
+     "line": "黑五照常卖；写清现在下单大约哪天到、每一步都会告诉你；说清圣诞前到不了"
+    },
+    {
+     "post": "R7",
+     "line": "用一件单品（07 藤编门边柜）走一遍按单做的流程，说清圣诞前到不了；结尾价格 + 链接"
+    }
+   ]
+  },
+  {
+   "id": "IP2",
+   "title": "退换和运费：把「出了事怎么办」先说出来",
+   "cells": [
+    "F13"
+   ],
+   "cells_secondary": [
+    "C2",
+    "F12",
+    "A2"
+   ],
+   "stuck": [
+    {
+     "case": "C25",
+     "who": "楼主·23赞",
+     "en": "I didn't PAY for a broken product.",
+     "zh": "我付钱不是买个坏东西",
+     "hl": [
+      "broken product"
+     ],
+     "pos": false
+    },
+    {
+     "case": "C1",
+     "who": "楼主",
+     "en": "This company charged me three times for the same service they gave me once, then refused to honor the refund they had promised!",
+     "zh": "一次服务收三次钱，说好的退款又不认",
+     "hl": [
+      "charged me three times",
+      "refused to honor the refund"
+     ],
+     "pos": false
+    }
+   ],
+   "answers": {
+    "case": "C25",
+    "q": "BW藤椅送到时坏了一角，买家会等换件，还是直接退？",
+    "a": "看他事先知不知道坏了怎么办。规则讲在前面，更多人愿意等换件（案例里：店里送坏就换新，买家就认）"
+   },
+   "now": "IG 上没有任何关于运费、送货、出事怎么办的信息",
+   "after": "买家在下单前就看到：运费怎么算、送到哪、坏了怎么处理",
+   "posts": [
+    "R5"
+   ],
+   "highlight": null,
+   "need_info": [
+    "退换 / 出事怎么处理（现在：不退运费，出事重做一单）"
+   ],
+   "limit": "规则本身由网站和 Nico 定；IG 只负责把已经定下的规则讲清楚",
+   "detail": [
+    {
+     "post": "P4",
+     "date": "12/4",
+     "image": "文字卡轮播",
+     "copy": "What buyers worry about #3: “What if it arrives broken?” Our answer: [policy]",
+     "img": null,
+     "answers_cells": [
+      "F13",
+      "C2",
+      "F12"
+     ]
+    }
+   ],
+   "missing": [
+    "退换条款要 Nico 给"
+   ],
+   "post_lines": [
+    {
+     "post": "R5",
+     "line": "用一件单品（06 浅色藤编圈椅）回答买家最担心的 3 件事：没坐过、值不值、等多久；结尾价格 + 链接"
+    }
+   ]
+  },
+  {
+   "id": "IP3",
+   "title": "材料和结构：让买家能对着清单比",
+   "cells": [
+    "F8"
+   ],
+   "cells_secondary": [
+    "W1",
+    "F7",
+    "F2"
+   ],
+   "stuck": [
+    {
+     "case": "C10",
+     "who": "内行A·3229赞",
+     "en": "Kiln-dried wood, coil springs (sinuous springs are also good, but not as nice as coils, high-density foam for the seats",
+     "zh": "窑干木、螺旋弹簧、高密度海绵坐垫",
+     "hl": [
+      "Kiln-dried wood",
+      "coil springs",
+      "high-density foam"
+     ],
+     "pos": true
+    },
+    {
+     "case": "C18",
+     "who": "网友A·75赞",
+     "en": "They have pretty aesthetics, but the Furniture there can vary wildly as they are not a manufacturer.",
+     "zh": "好看但质量参差，因为它们不是制造商",
+     "hl": [
+      "not a manufacturer",
+      "vary wildly"
+     ],
+     "pos": false
+    }
+   ],
+   "answers": {
+    "case": "C10",
+    "q": "买家拿 3229 赞清单逐项对，BW 能答出几项？",
+    "a": "现在在 IG 上一项都对不上。材料卡把木种、藤、接合、面料一项项写出来，让他能逐项打勾"
+   },
+   "now": "IG 只有好看的图，看不出用什么木、怎么接合、能用多久",
+   "after": "买家能拿行家的检查清单对照 BW：木种、藤、接合、面料",
+   "posts": [
+    "R6"
+   ],
+   "highlight": null,
+   "need_info": [
+    "每件的材料和结构参数"
+   ],
+   "limit": "参数要真实，不写「实木」除非全是实木",
+   "detail": [
+    {
+     "post": "P5",
+     "date": "12/11",
+     "image": "现有图的局部裁切（材质、编织、接合处）",
+     "copy": "What it’s made of: [wood] frame · hand-wrapped rattan · [joinery] · [fabric]",
+     "img": "06",
+     "answers_cells": [
+      "F8",
+      "W1",
+      "F7"
+     ]
+    }
+   ],
+   "missing": [
+    "每件参数要 Nico 给"
+   ],
+   "post_lines": [
+    {
+     "post": "R6",
+     "line": "用一件单品（02 深色框藤背扶手椅）从框、藤、接合、坐垫讲到底；结尾价格 + 链接"
+    }
+   ]
+  },
+  {
+   "id": "IP4",
+   "title": "谁做的、在哪做、图是不是真的：先自己说",
+   "cells": [
+    "F9"
+   ],
+   "cells_secondary": [
+    "F1",
+    "F4",
+    "F2"
+   ],
+   "stuck": [
+    {
+     "case": "C9",
+     "who": "网友P·9赞",
+     "en": "99% of even expensive new furniture is poorly made in china or some even lower cost country out of dodgy materials.",
+     "zh": "贵的新家具 99% 也是中国劣质造",
+     "hl": [
+      "poorly made in china"
+     ],
+     "pos": false
+    },
+    {
+     "case": "C22",
+     "who": "楼主",
+     "en": "I’m a bit hesitant to buy without being able to try it in person and also skeptical of Instagram popular brands",
+     "zh": "不能试坐有点犹豫，也怀疑IG爆款品牌",
+     "hl": [
+      "skeptical of Instagram popular brands",
+      "try it in person"
+     ],
+     "pos": false
+    },
+    {
+     "case": "C2",
+     "who": "楼主",
+     "en": "weird AI photos so you have no idea what anything looks like",
+     "zh": "怪AI图，完全看不出东西长啥样",
+     "hl": [
+      "weird AI photos",
+      "no idea what anything looks like"
+     ],
+     "pos": false
+    }
+   ],
+   "answers": {
+    "case": "C22",
+    "q": "如果买家在IG刷到BW，她去哪找「用了两年」的人？",
+    "a": "现在找不到。先自己讲清谁做、在哪做；第一批买家到货后再请他们发实拍"
+   },
+   "now": "没有实拍、产品图多为 AI/渲染，产地没讲；正好撞上「IG 爆款不可信」「AI 图看不出样子」",
+   "after": "自己先讲：在哪做、按单做、为什么这个价；图按筛图规则，用了渲染就标明",
+   "posts": [
+    "R2",
+    "R5"
+   ],
+   "highlight": null,
+   "need_info": [
+    "工坊所在地、做了多少年（愿意公开的部分）"
+   ],
+   "limit": "不编造工艺和产地；方括号事实没确认前不发",
+   "detail": [
+    {
+     "post": "P2",
+     "date": "11/22 上线",
+     "image": "局部裁切 + 文字卡；成品图标注渲染",
+     "copy": "We're open. Here's who makes it, how, and why it costs this. …（旁白 5 句）",
+     "img": "02",
+     "answers_cells": [
+      "F9",
+      "F1",
+      "F4"
+     ]
+    },
+    {
+     "post": "P4",
+     "date": "12/4",
+     "image": "文字卡轮播",
+     "copy": "What buyers worry about: never sat on it · is it worth it · how long",
+     "img": null,
+     "answers_cells": [
+      "F9",
+      "F1",
+      "F4"
+     ]
+    }
+   ],
+   "missing": [
+    "工坊/产地事实要 Nico 确认"
+   ],
+   "image_rule": [
+    "只用比例对的图；比例不对的不用",
+    "用局部裁切（材质、编织、接合处），少用整件场景图",
+    "多用文字卡（买家的问题 + 我们的回答）",
+    "用了渲染/生成图就标明（Marketing 总控已定的 AI 披露规则）"
+   ],
+   "post_lines": [
+    {
+     "post": "R2",
+     "line": "上线 statement：承接 R1 的主张，用事实兑现——谁做、怎么做、多少钱、为什么这个价；不提国家"
+    },
+    {
+     "post": "R5",
+     "line": "用一件单品（06 浅色藤编圈椅）回答买家最担心的 3 件事：没坐过、值不值、等多久；结尾价格 + 链接"
+    }
+   ]
+  }
+ ]
+}

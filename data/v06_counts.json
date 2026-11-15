@@ -1,0 +1,128 @@
+{
+ "note": "从 抓取/v06编排_2026-11-14.json 抽出的每格条数（页面用）；机器归类，未经 Tian 核对",
+ "source": "抓取/v06编排_2026-11-14.json",
+ "date": "2026-11-14",
+ "cells": {
+  "W1": {
+   "n": 143,
+   "n_neutral": 3,
+   "n_threads": 64
+  },
+  "W2": {
+   "n": 47,
+   "n_neutral": 1,
+   "n_threads": 37
+  },
+  "W3": {
+   "n": 79,
+   "n_neutral": 5,
+   "n_threads": 49
+  },
+  "W4": {
+   "n": 38,
+   "n_neutral": 0,
+   "n_threads": 28
+  },
+  "C1": {
+   "n": 277,
+   "n_neutral": 3,
+   "n_threads": 99
+  },
+  "C2": {
+   "n": 18,
+   "n_neutral": 0,
+   "n_threads": 15
+  },
+  "C3": {
+   "n": 45,
+   "n_neutral": 1,
+   "n_threads": 34
+  },
+  "C4": {
+   "n": 47,
+   "n_neutral": 0,
+   "n_threads": 24
+  },
+  "F1": {
+   "n": 40,
+   "n_neutral": 0,
+   "n_threads": 28
+  },
+  "F2": {
+   "n": 51,
+   "n_neutral": 2,
+   "n_threads": 36
+  },
+  "F3": {
+   "n": 16,
+   "n_neutral": 0,
+   "n_threads": 14
+  },
+  "F4": {
+   "n": 74,
+   "n_neutral": 5,
+   "n_threads": 52
+  },
+  "F5": {
+   "n": 44,
+   "n_neutral": 7,
+   "n_threads": 29
+  },
+  "F6": {
+   "n": 13,
+   "n_neutral": 2,
+   "n_threads": 11
+  },
+  "F7": {
+   "n": 73,
+   "n_neutral": 1,
+   "n_threads": 50
+  },
+  "F8": {
+   "n": 102,
+   "n_neutral": 0,
+   "n_threads": 44
+  },
+  "F9": {
+   "n": 33,
+   "n_neutral": 0,
+   "n_threads": 22
+  },
+  "F10": {
+   "n": 18,
+   "n_neutral": 0,
+   "n_threads": 16
+  },
+  "F11": {
+   "n": 70,
+   "n_neutral": 0,
+   "n_threads": 21
+  },
+  "F12": {
+   "n": 15,
+   "n_neutral": 0,
+   "n_threads": 10
+  },
+  "F13": {
+   "n": 32,
+   "n_neutral": 1,
+   "n_threads": 25
+  },
+  "A1": {
+   "n": 138,
+   "n_neutral": 5,
+   "n_threads": 77
+  },
+  "A2": {
+   "n": 246,
+   "n_neutral": 2,
+   "n_threads": 89
+  }
+ },
+ "unplaced": 91,
+ "excluded": {
+  "不计：不是美国": 14,
+  "不计：不是家具": 5,
+  "不计：重复": 3
+ }
+}
